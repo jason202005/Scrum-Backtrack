@@ -1,0 +1,52 @@
+{% load static %}
+<link href="{{ STATIC_URL }} https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css " rel="stylesheet" id="bootstrap-css">
+<script src="{{ STATIC_URL }}static https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" ></script>
+<script src="{{ STATIC_URL }} static https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+      <li class="nav-item active">
+        <a class="nav-link" href="http://127.0.0.1:8000">Login <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Dropdown
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<section class="testimonial py-5" id="testimonial">
+    <div class="container">
+        <div class="row ">
+            <div class="col-md-4 py-5 bg-primary text-white text-center ">
+                <div class=" ">
+                    <div class="card-body">
+                        <img src="http://www.ansonika.com/mavia/img/registration_bg.svg" style="width:30%">
+                        <h2 class="py-3">Registration</h2>
+                        <p>Quickstep brings efficiency and accountability to tech while focusing
+                           on delivering software and all exercises are designed around how a Scrum Team works to deliver that software.
+                         </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 py-5 border">
+                <h4 class="pb-4">Please Select with your role</h4>
+                <button class="btn btn-primary" onclick="window.location.href = 'http://127.0.0.1:8000/registerdev';">Register as A Developer</button>
+                <button class="btn btn-dark" onclick="window.location.href = 'http://127.0.0.1:8000/registersm';">Register as A Scrum Master</button>
+                <button  class="btn btn-success" onclick="window.location.href = 'http://127.0.0.1:8000/registerpo';">Register as A Product Owner</button>
+            </div>
+        </div>
+    </div>
+</section>

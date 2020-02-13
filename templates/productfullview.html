@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Simple Sidebar - Start Bootstrap Template</title>
+  {% load static %}
+
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/simple-sidebar.css' %}" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <div class="d-flex" id="wrapper">
+    <div class="bg-light border-right" id="sidebar-wrapper">
+    {% include 'header.html' %}
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+      {% include 'navbar.html' %}
+
+      <div class="container-fluid">
+          <div>
+                <h1 class="mt-4">Product Full View   </h1>
+          </div>
+
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+
+                {% for i in titled %}
+                <th scope="col">{{i}}</th>
+                {% endfor %}
+              </tr>
+            </thead>
+            <tbody>
+              {% for r in rows %}
+              <tr>
+                <th scope="row" >{{r.name}}</th>
+                <td>{{r.owner}}</td>
+                <td>{{r.scrum_master}}</td>
+                <td>{{r.sprint_status}}</td>
+                <td></td>
+              </tr>
+              {% endfor %}
+              </tbody>
+
+            </table>
+
+    </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Bootstrap core JavaScript -->
+  <script src= "{% static 'vendor/jquery/jquery.min.js' %}" ></script>
+  <script src= "{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Menu Toggle Script -->
+  <script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+  </script>
+
+</body>
+
+</html>

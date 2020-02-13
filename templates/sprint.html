@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Simple Sidebar - Start Bootstrap Template</title>
+  {% load static %}
+  <!-- Bootstrap core CSS -->
+  <link href=" {% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href=" {% static 'css/simple-sidebar.css' %}" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <div class="d-flex" id="wrapper">
+
+    <div class="bg-light border-right" id="sidebar-wrapper">
+    {% include 'header.html' %}
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+      {% include 'navbar.html' %}
+
+      <div class="container-fluid">
+          <h1 class="mt-4">Sprint BackLog (
+            {% if product.sprint_status == "NOT_YET_START"%}
+                Planning
+            {% elif product.sprint_status == "START"%}
+                Processing
+            {% elif product.sprint_status == "FINISH"%}
+                Finished
+            {% endif %} )   <button class="btn btn-primary" onclick="window.location.href = 'http://127.0.0.1:8000/fullSprintBacklog/';">View All Tasks</button></h1>
+        <table class="table">
+          <thead class="thead-light">
+            <tr>
+              {% for i in title %}
+                <th scope="col">{{i}}</th>
+              {% endfor %}
+              {% if product.sprint_status != "START"%}
+                {% if user.is_authenticated and user.is_DEVELOPER %}
+                <th scope="col">Operation</th>
+                {% endif %}
+              {% endif %}
+            </tr>
+          </thead>
+          <tbody>
+            {% for pbi in pbis %}
+            <tr>
+              <th scope="row">
+                  {% if user.is_authenticated and user.is_DEVELOPER %}
+                    <button type="button" class="btn btn-info" onclick="window.location.href = 'http://127.0.0.1:8000/viewPBIdetail/{{pbi.pk}}';">
+                      <div align='center'>{{pbi.name}}</div>
+                      <div align='center'>Story Points = {{pbi.story_point}}</div>
+                    </button>
+                  {% else %}
+                    <button type="button" class="btn btn-info" >
+                      <div align='center'>{{pbi.name}}</div>
+                      <div align='center'>Story Points = {{pbi.story_point}}</div>
+                    </button>
+                  {% endif %}
+              </th>
+              <td>
+                <ul class="list-group list-group-horizontal">
+                  {% for t in tasks %}
+                    {% if t.pbi.name == pbi.name and t.status != "DONE" %}
+                      {% if t.status == "NOT_YET_START" %}
+                      {% if user.is_authenticated and user.is_DEVELOPER %}
+                      <button type="button" class="btn btn-danger" onclick="window.location.href = 'http://127.0.0.1:8000/updateTask/{{t.pk}}';">
+                        <div align='center'>{{t.name}}</div>
+                        <div align='center'>Hours={{t.hour}}</div>
+                      </button>
+                      {% else %}
+                      <button type="button" class="btn btn-danger">
+                        <div align='center'>{{t.name}}</div>
+                        <div align='center'>Hours={{t.hour}}</div>
+                      </button>
+                      {% endif %}
+                      <pre> </pre>
+                      {% else %}
+                      {% if user.is_authenticated and user.is_DEVELOPER %}
+                      <button type="button" class="btn btn-warning" onclick="window.location.href = 'http://127.0.0.1:8000/updateTask/{{t.pk}}';">
+                        <div align='center'>{{t.name}}</div>
+                        <div align='center'>Hours={{t.hour}}</div>
+                      </button>
+                      {% else %}
+                      <button type="button" class="btn btn-warning">
+                        <div align='center'>{{t.name}}</div>
+                        <div align='center'>Hours={{t.hour}}</div>
+                      </button>
+                      {% endif %}
+                      <pre> </pre>
+                      {% endif %}
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </td>
+              <td align='left'>{{pbi.total_effort_hours}}</td>
+              {% if product.sprint_status != "START"%}
+                {% if user.is_authenticated and user.is_DEVELOPER %}
+                <td><button onclick="window.location.href = 'http://127.0.0.1:8000/addtoSprint/{{ pbi.pk }}';">Remove from Sprint</button></td>
+                {% endif %}
+              {% endif %}
+            </tr>
+            {% endfor %}
+            <tr>
+              <td><b>Total {{sprint_tatal_story_points}} story points</b></td>
+              <td align='right'><b>Total Effort Hours in Sprint:</b></td>
+              <td align='left'><b>{{sprint_total_effort_hours}}</b></td>
+            </tr>
+          </tbody>
+        </table>
+  {% if user.is_authenticated and user.is_DEVELOPER %}
+  <div class="btn-group" role="group" aria-label="Basic example">
+      <button type="submit" class="btn btn-primary" onclick="window.location.href = 'http://127.0.0.1:8000/addTask';">Add Task</button>
+
+      {% if product.sprint_status == 'NOT_YET_START' %}
+      <button type="submit" class="btn btn-success" onclick="window.location.href = 'http://127.0.0.1:8000/changeSprint/';">Start the Sprint</button>
+
+      {% elif product.sprint_status == 'START' %}
+      <button type="submit" class="btn btn-secondary" onclick="window.location.href = 'http://127.0.0.1:8000/changeSprint';">End the Sprint</button>
+      {% elif product.sprint_status == 'FINISH' %}
+      <button type="submit" class="btn btn-secondary" onclick="window.location.href = 'http://127.0.0.1:8000/changeSprint';">Plan the Next Sprint</button>
+      {% endif %}
+      </div>
+  {% endif %}
+</div>
+  <div class="container-fluid">
+  <h2 class="mt-4">My processing task</h2>
+  <table class="table">
+    <thead class="thead-light">
+      <tr>
+          <th scope="col">Task</th>
+          <th scope="col">PBI</th>
+          <th scope="col">Hour</th>
+          <th scope="col">Operation</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for t in tasks %}
+      {% if t.owner == user.first_name and t.status != "DONE" and t.pbi.status == "IN_PROCESSING"%}
+      <tr>
+
+          <ul class="list-group list-group-horizontal">
+
+          <td>{{t.name}}</td>
+          <td>{{t.pbi}}</td>
+          <td>{{t.hour}}</td>
+          <td>
+          {% if user.is_authenticated and user.is_DEVELOPER %}
+
+          <div>
+
+          <button type="submit" class="btn btn-success" onclick="window.location.href = 'http://127.0.0.1:8000/updateTask/{{t.pk}}';">Edit</button>
+
+
+          <button type="submit" class="btn btn-secondary" onclick="window.location.href = 'http://127.0.0.1:8000/deleteTask/{{t.pk}}';">Delete</button>
+
+          <button type="submit" class="btn btn-secondary" onclick="window.location.href = 'http://127.0.0.1:8000/viewTASKdetail/{{t.pk}}';">Detail</button>
+
+          {% endif %}
+        </td>
+          </ul>
+      </tr>
+      {% endif %}
+      {% endfor %}
+
+    </tbody>
+  </table>
+      </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+  </div>
+  </div>
+  <!-- /#wrapper -->
+
+  <!-- Bootstrap core JavaScript -->
+  <script src= "{% static 'vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Menu Toggle Script -->
+  <script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+  </script>
+
+</body>
+
+</html>

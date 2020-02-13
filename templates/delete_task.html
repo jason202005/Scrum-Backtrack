@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  {% load static %}
+<link href="{% static 'css/addproduct.css'%}" rel="stylesheet">
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Simple Sidebar - Start Bootstrap Template</title>
+
+
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/simple-sidebar.css' %}" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <div class="d-flex" id="wrapper">
+    <div class="bg-light border-right" id="sidebar-wrapper">
+    {% include 'header.html' %}
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+      {% include 'navbar.html' %}
+
+      <div class="container-fluid">
+        <h1 class="mt-4"> </h1>
+
+
+        <div class="container register-form">
+                    <div class="form">
+                        <div class="note">
+                            <p>Are you sure to delete this Task "{{Task.name}}"?</p>
+
+                        </div>
+
+                        <form class="form-content" method="post">
+
+                          {% csrf_token %}
+                          <center>
+                            <button class="btn btn-primary">Submit</button>
+                          </center>
+                        </form>
+                    </div>
+                </div>
+
+
+
+      </div>
+    </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+
+  </div>
+  <!-- /#wrapper -->
+
+
+  <!-- Bootstrap core JavaScript -->
+  <script src= "{% static 'vendor/jquery/jquery.min.js' %}" ></script>
+  <script src= "{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Menu Toggle Script -->
+  <script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+  </script>
+
+</body>
+
+</html>
+
+
+
+<!------ Include the above in your HEAD tag ---------->

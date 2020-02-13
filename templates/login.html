@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+   {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script src="{% static 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js' %}" charset="utf-8"></script>
+  </head>
+  <body>
+
+
+
+
+        <div class = "content-section">
+          <center>
+          <form method="POST" class="login-form">
+            <h1>Welcome to BackTrack </h1>
+
+            {%csrf_token %}
+            <fieldset class="form-group">
+              <legend class="border-bottom mb-4">Login to BackTrack</legend>
+                  {{ form.as_p}}
+            
+                  <center><button class="btn btn-success" type="btn btn-outline-info" name="submit">Login</button></center>
+
+            </fieldset>
+              
+
+            <div class="border-top pt-3">
+                <small class="text-muted">
+                Need An Account? <button class="btn btn-dark" onclick="window.location.href = 'http://127.0.0.1:8000/register';">REGISTER</button>
+                </small>
+            </div>
+              
+
+          </form>
+          </center>
+        </div>
+
+
+
+
+      <script type="text/javascript">
+      $(".txtb input").on("focus",function(){
+        $(this).addClass("focus");
+      });
+
+      $(".txtb input").on("blur",function(){
+        if($(this).val() == "")
+        $(this).removeClass("focus");
+      });
+
+      </script>
+
+
+  </body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Simple Sidebar - Start Bootstrap Template</title>
+  {% load static %}
+
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{% static 'css/simple-sidebar.css' %}" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <div class="d-flex" id="wrapper">
+    <div class="bg-light border-right" id="sidebar-wrapper">
+    {% include 'header.html' %}
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+      {% include 'navbar.html' %}
+
+      <div class="container-fluid">
+        <div>
+          <h1 class="mt-4">
+            Product BackLog
+            <button class="btn btn-primary" onclick="window.location.href = 'http://127.0.0.1:8000/viewFullPBI';">
+              Switch to Full View
+            </button>
+          </h1>
+        </div>
+
+        <table class="table">
+          <thead class="thead-dark">
+            <tr>
+              {% for i in title %}
+              <th scope="col">{{i}}</th>
+              {% endfor %}
+              <th>Operation</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for r in rows %}
+              {% if r.status != "DONE" %}
+              <tr>
+                <th scope="row">{{r.priority}}</th>
+                <td>{{r.name}}</td>
+                <td>{{r.status}}</td>
+                <td>{{r.story_point}}</td>
+                <td>{{r.cumulative_story_point}}</td>
+                <td>
+                  <button onclick="window.location.href = 'http://127.0.0.1:8000/viewPBIdetail/{{ r.pk }}'; id = {{r.priority}}">Detail</button>
+                  {% if r.status == "NOT_YET_START" or r.status == "UNFINISHED"%}
+                  {%if r.status == "NOT_YET_START"%}
+                    {% if user.is_authenticated and user.is_PRODUCT_OWNER %}
+                      <button onclick="window.location.href = 'http://127.0.0.1:8000/updatePBI/{{ r.pk }}'; id = {{r.priority}}">Edit</button>
+                      <button onclick="window.location.href = 'http://127.0.0.1:8000/deletePBI/{{ r.pk }}'; id = {{r.priority}}">Delete</button>
+                    {% endif %}
+                  {% endif %}
+                    {% if product.sprint_status != "START"%}
+                      {% if user.is_authenticated and user.is_DEVELOPER %}
+                      <button onclick="window.location.href = 'http://127.0.0.1:8000/addtoSprint/{{ r.pk }}'; id = {{r.priority}}">Add to Sprint</button>
+                      {% endif %}
+                    {% endif %}
+                  {% elif r.status == "IN_PROCESSING"%}
+                    {% if product.sprint_status != "START"%}
+                      {% if user.is_authenticated and user.is_DEVELOPER %}
+                        <button onclick="window.location.href = 'http://127.0.0.1:8000/addtoSprint/{{ r.pk }}'; id = {{r.priority}}">Remove from Sprint</button>
+                      {% endif %}
+                    {% endif %}
+                  {% endif %}
+                </td>
+              </tr>
+              {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+
+        {% if user.is_authenticated and user.is_PRODUCT_OWNER %}
+        <p>
+            <button class="btn btn-primary" onclick="window.location.href = 'http://127.0.0.1:8000/addPBI';">Add new PBI</button>
+        </p>
+        {% endif %}
+      </div>
+    </div>
+    </div>
+    <!-- /#page-content-wrapper -->
+  </div>
+  <!-- /#wrapper -->
+
+
+  <!-- Bootstrap core JavaScript -->
+  <script src= "{% static 'vendor/jquery/jquery.min.js' %}" ></script>
+  <script src= "{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Menu Toggle Script -->
+  <script>
+    $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#wrapper").toggleClass("toggled");
+    });
+  </script>
+
+</body>
+
+</html>
